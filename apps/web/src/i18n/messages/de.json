@@ -1,0 +1,37 @@
+{
+  "home": {
+    "title": "QR Café Plattform",
+    "subtitle": "Eine Web-App für Gäste, Admin, Kellner und Küche. Next.js 14 + Bootstrap 5.",
+    "demo": {
+      "sectionTitle": "Demo: Eingabefeld & Button",
+      "input": {
+        "label": "Ihr Name",
+        "placeholder": "Geben Sie Ihren Namen ein",
+        "help": "Nur Demo – es wird nichts gespeichert."
+      },
+      "button": { "submit": "Weiter" }
+    },
+    "links": {
+      "customer": "Gast",
+      "admin": "Admin",
+      "waiter": "Kellner",
+      "kitchen": "Küche"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Theme- und UI-Editor, Menü, Aktionen, Tische/QRs und Nutzer."
+  },
+  "customer": {
+    "title": "Gast (PWA)",
+    "subtitle": "Menü, Warenkorb, Bestellung, Zahlung/Warten."
+  },
+  "waiter": {
+    "title": "Kellner",
+    "subtitle": "Bestellübersicht mit Schnellaktionen (annehmen/servieren/bezahlen)."
+  },
+  "kitchen": {
+    "title": "Küche",
+    "subtitle": "Küchenanzeige: Status der Gerichte und Timer."
+  }
+}

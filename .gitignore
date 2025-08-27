@@ -1,0 +1,47 @@
+# --- Node / package managers ---
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# --- Next.js / build artifacts (любая app) ---
+.next/
+out/
+dist/
+build/
+.cache/
+.vercel/
+
+# --- Turborepo / task runners ---
+.turbo/
+
+# --- Coverage ---
+coverage/
+*.lcov
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- Env files (секреты не коммитим) ---
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Storybook (если будет) ---
+storybook-static/
+.storybook-out/
+
+# --- Misc ---
+*.orig

@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: cafe-qr-api:latest
+    container_name: cafe-qr-api
+    env_file:
+      - apps/api/.env
+    environment:
+      # Значения по умолчанию, если .env нет
+      PORT: ${PORT:-3000}
+      NODE_ENV: ${NODE_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - "3000:3000"
+    healthcheck:
+      # Без curl/wget: используем сам Node для запроса /health
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const http=require('http');const req=http.request({host:'127.0.0.1',port:process.env.PORT||3000,path:'/health'},res=>process.exit(res.statusCode===200?0:1));req.on('error',()=>process.exit(1));req.end();"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - cafe-qr-net
+
+networks:
+  cafe-qr-net:
+    name: cafe-qr-net

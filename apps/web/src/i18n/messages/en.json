@@ -1,0 +1,37 @@
+{
+  "home": {
+    "title": "QR Café Platform",
+    "subtitle": "One web app for Customers, Admin, Waiters and Kitchen. Next.js 14 + Bootstrap 5.",
+    "demo": {
+      "sectionTitle": "Demo: input & button",
+      "input": {
+        "label": "Your name",
+        "placeholder": "Type your name",
+        "help": "Demo only — nothing is stored."
+      },
+      "button": { "submit": "Continue" }
+    },
+    "links": {
+      "customer": "Customer",
+      "admin": "Admin",
+      "waiter": "Waiter",
+      "kitchen": "Kitchen"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Theme & UI editor, menu, promotions, tables/QRs and users."
+  },
+  "customer": {
+    "title": "Customer (PWA)",
+    "subtitle": "Menu, cart, order, payment/waiting."
+  },
+  "waiter": {
+    "title": "Waiter",
+    "subtitle": "Order queue, quick actions (accept/serve/pay)."
+  },
+  "kitchen": {
+    "title": "Kitchen",
+    "subtitle": "Kitchen screen: dish statuses and timers."
+  }
+}

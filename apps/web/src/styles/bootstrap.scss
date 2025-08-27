@@ -1,0 +1,51 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/bootstrap";
+
+/* 2) Переопределяем CSS-переменные Bootstrap на уровне :root (runtime-темизация) */
+:root {
+  /* Цвета темы */
+  --bs-primary:   var(--qc-color-primary,   #0d6efd);
+  --bs-secondary: var(--qc-color-secondary, #6c757d);
+  --bs-success:   var(--qc-color-success,   #198754);
+  --bs-info:      var(--qc-color-info,      #0dcaf0);
+  --bs-warning:   var(--qc-color-warning,   #ffc107);
+  --bs-danger:    var(--qc-color-danger,    #dc3545);
+  --bs-light:     var(--qc-color-light,     #f8f9fa);
+  --bs-dark:      var(--qc-color-dark,      #212529);
+
+  /* Текст/фон/бордеры/ссылки */
+  --bs-body-font-family: var(--qc-font-sans, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+  --bs-body-color:       var(--qc-text-color, #212529);
+  --bs-body-bg:          var(--qc-bg-color,   #ffffff);
+  --bs-border-color:     var(--qc-border-color, #dee2e6);
+
+  --bs-link-color:       var(--qc-link-color, var(--bs-primary));
+  --bs-link-hover-color: var(--qc-link-hover-color, var(--bs-primary));
+
+  /* Радиусы */
+  --bs-border-radius:    var(--qc-radius, .5rem);
+  --bs-border-radius-sm: var(--qc-radius-sm, .375rem);
+  --bs-border-radius-lg: var(--qc-radius-lg, .75rem);
+
+  /* Наши утилити-токены для кнопок/инпутов */
+  --qc-btn-radius:   var(--qc-radius, .5rem);
+  --qc-btn-py:       .5rem;
+  --qc-btn-px:       1rem;
+  --qc-input-radius: var(--qc-radius, .5rem);
+  --qc-input-py:     .5rem;
+  --qc-input-px:     .75rem;
+}
+
+/* 3) Утилити-классы для быстрого тюнинга (используются реестром компонентов) */
+.qc-rounded-0 { --qc-radius: 0; }
+.qc-rounded-1 { --qc-radius: .25rem; }
+.qc-rounded-2 { --qc-radius: .5rem; }
+.qc-rounded-3 { --qc-radius: .75rem; }
+.qc-rounded-pill { --qc-radius: 50rem; }
+
+.qc-btn-wide { --qc-btn-px: 1.25rem; }
+.qc-btn-narrow { --qc-btn-px: .5rem; }
+
+.qc-input-compact { --qc-input-py: .375rem; --qc-input-px: .5rem; }
+.qc-input-spacious { --qc-input-py: .75rem; --qc-input-px: 1rem; }

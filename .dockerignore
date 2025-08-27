@@ -1,0 +1,81 @@
+# --- VCS / служебные ---
+.git
+.gitignore
+.github
+.gitlab
+.hg
+.svn
+
+# --- Node/npm/pnpm кеши и модули ---
+node_modules
+**/node_modules
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npmrc
+.pnpmfile.cjs
+.pnp.*
+
+# ВАЖНО: lockfile и workspace нужны для детерминированной сборки — не игнорируем!
+#!pnpm-lock.yaml
+#!package-lock.json
+#!yarn.lock
+#!pnpm-workspace.yaml
+#!package.json
+
+# --- Сборочные артефакты ---
+dist
+**/dist
+build
+**/build
+.next
+**/.next
+out
+**/out
+.cache
+**/.cache
+coverage
+**/coverage
+
+# --- Env / секреты ---
+.env
+**/.env
+.env.*.local
+**/.env.*.local
+# шаблоны окружения оставляем (разрешаем копировать)
+!*.env.example
+!**/.env.example
+
+# --- Логи ---
+*.log
+**/*.log
+logs
+**/logs
+
+# --- IDE / OS-мусор ---
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Тестовые файлы (опционально исключаем, чтобы уменьшить контекст) ---
+test
+**/*.spec.ts
+**/*.e2e-spec.ts
+.jest
+**/.jest
+
+# --- Локальные временные ---
+tmp
+temp
+**/tmp
+**/temp
+
+# --- Если фронт когда-нибудь вернётся в монорепо (не мешает, просто улучшает кэш) ---
+apps/web/node_modules
+apps/web/.next
+apps/web/out
