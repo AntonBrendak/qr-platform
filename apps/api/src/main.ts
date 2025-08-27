@@ -1,20 +1,19 @@
-import 'dotenv/config'; // грузим переменные из .env до старта Nest
+import 'dotenv/config'; 
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module.js'; // ESM: у локальных импортов обязательно .js
+import { AppModule } from './app.module.js'; 
 import { Logger } from 'nestjs-pino';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
+import { PrismaService } from './common/prisma.service.js'; 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    bufferLogs: true, // буферим логи до инициализации pino-логгера
+    bufferLogs: true, 
   });
 
-  // Подключаем pino-логгер, сконфигурированный в AppModule через nestjs-pino
   app.useLogger(app.get(Logger));
 
-  // Глобальная валидация DTO 
+  // Глобальная валидация DTO
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,           // выбрасывает поля, которых нет в DTO
@@ -23,15 +22,23 @@ async function bootstrap() {
     }),
   );
 
-  // Swagger (/docs)
+  app.enableCors({ origin: true, credentials: true });
+
   const cfg = new DocumentBuilder()
     .setTitle('Cafe QR Platform API')
-    .setDescription('Phase 0: health & readiness')
-    .setVersion('0.0.1')
+    .setDescription(
+      'Tenants + Admin/Public. Язык меню клиента выбирается per-request и НЕ влияет на админ/кухню.',
+    )
+    .setVersion('1.0.0')
+    .addBearerAuth() // подготовка к Phase 2 (JWT)
     .build();
 
   const doc = SwaggerModule.createDocument(app, cfg);
   SwaggerModule.setup('docs', app, doc);
+
+  // ✅ корректное завершение соединений Prisma
+  const prisma = app.get(PrismaService);
+  await prisma.enableShutdownHooks(app);
 
   const port = Number(process.env.PORT ?? 3000);
   await app.listen(port);

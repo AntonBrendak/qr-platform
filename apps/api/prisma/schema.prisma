@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/** Локали бренда (fallback) */
+enum Locale {
+  de
+  en
+  ru
+}
+
+/** Типы ассетов */
+enum AssetKind {
+  logo
+  image
+  file
+}
+
+/** TENANT — арендатор/бренд кафе. */
+model Tenant {
+  id            String     @id @default(uuid())
+  name          String
+  domain        String?    @unique
+  defaultLocale Locale     @default(de)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // relations
+  locations Location[]
+  theme     Theme?
+  assets    Asset[]
+
+  @@index([name])
+}
+
+/** LOCATION — физическая точка (кафе/зал) внутри арендатора. */
+model Location {
+  id        String   @id @default(uuid())
+  tenantId  String
+  name      String
+  address   String?
+  timezone  String   @default("Europe/Berlin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tables Table[]
+
+  @@index([tenantId])
+}
+
+/** TABLE — столик принадлежит ТОЛЬКО локации. */
+model Table {
+  id         String   @id @default(uuid())
+  locationId String
+  number     String
+  qrSalt     String   @default(uuid())
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([locationId])
+  @@unique([locationId, number]) // уникальный номер столика в пределах локации
+}
+
+/** THEME — CSS-токены (1:1 к Tenant). */
+model Theme {
+  id        String   @id @default(uuid())
+  tenantId  String   @unique
+  tokens    Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+}
+
+/** ASSET — метаданные файла в S3/MinIO, принадлежащего тенанту. */
+model Asset {
+  id          String    @id @default(uuid())
+  tenantId    String
+  kind        AssetKind
+  key         String
+  filename    String?
+  contentType String?
+  size        Int?
+  meta        Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([tenantId, kind])
+  @@unique([tenantId, key])
+}

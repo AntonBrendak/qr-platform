@@ -1,6 +1,26 @@
 version: "3.9"
 
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: cafe-qr-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-qr}
+      POSTGRES_USER: ${DB_USER:-qrapp}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-qrpass}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - cafe-qr-net
+
   api:
     build:
       context: .
@@ -14,10 +34,13 @@ services:
       PORT: ${PORT:-3000}
       NODE_ENV: ${NODE_ENV:-production}
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://qrapp:qrpass@db:5432/qr?schema=public}
     ports:
       - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
-      # Без curl/wget: используем сам Node для запроса /health
       test:
         [
           "CMD",
@@ -36,3 +59,6 @@ services:
 networks:
   cafe-qr-net:
     name: cafe-qr-net
+
+volumes:
+  db-data:

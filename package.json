@@ -1,13 +1,4 @@
 {
-  "name": "cafe-qr-platform-monorepo",
-  "version": "0.0.1",
-  "private": true,
-  "description": "Monorepo for Cafe QR Ordering Platform (NestJS API + Next.js Web)",
-  "license": "MIT",
-  "packageManager": "pnpm@9.6.0",
-  "engines": {
-    "node": ">=20.10.0"
-  },
   "scripts": {
     "bootstrap": "pnpm install",
 
@@ -26,9 +17,22 @@
     "test": "pnpm -r run test",
     "test:e2e": "pnpm -r run test:e2e",
     "typecheck": "pnpm -r run typecheck",
-    "clean": "rimraf node_modules && pnpm -r exec rimraf node_modules dist"
-  },
-  "devDependencies": {
-    "rimraf": "^6.0.1"
+    "clean": "rimraf node_modules && pnpm -r exec rimraf node_modules dist",
+
+    "// ---------- DB (docker compose: service=db) ----------": "—",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose stop db",
+    "db:destroy": "docker compose down -v",
+    "db:ps": "docker compose ps",
+    "db:logs": "docker compose logs -f db",
+    "db:wait": "docker compose exec -T db sh -lc 'until pg_isready -U ${POSTGRES_USER:-qrapp} -d ${POSTGRES_DB:-qr}; do sleep 1; done'",
+    "db:shell": "docker compose exec db sh -lc 'psql -U ${POSTGRES_USER:-qrapp} -d ${POSTGRES_DB:-qr}'",
+
+    "// ---------- Prisma (run package scripts in @apps/api) ----------": "—",
+    "prisma:generate": "pnpm --filter @apps/api run prisma:generate",
+    "prisma:migrate": "pnpm --filter @apps/api run prisma:migrate",
+    "prisma:studio": "pnpm --filter @apps/api run prisma:studio",
+    "db:reset": "pnpm --filter @apps/api run db:reset",
+    "prisma:migrate:deploy": "pnpm --filter @apps/api exec prisma migrate deploy"
   }
 }
